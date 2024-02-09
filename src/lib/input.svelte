@@ -1,17 +1,32 @@
+<script context="module" lang="ts">
+    export type ValueEntered = { detail: { text: string; }; };
+    export type InputColors = 'red'|'green'|'';
+</script>
+
 <script lang="ts">
     import { Input } from '@smui/textfield';
     import Paper from '@smui/paper';
     import Fab from '@smui/fab';
     import { Icon } from '@smui/common';
+    import { createEventDispatcher } from 'svelte';
+    
+    
+    export let color: InputColors = '';
+    $: colorClass = color + '-fab';
 
-    export let value = '';
-    let currentValue = value;
-
+    let currentValue = '';
+    const dispatch = createEventDispatcher();
+    
     function handleKeyDown(event: CustomEvent | KeyboardEvent) {
         event = event as KeyboardEvent;
         if (event.key === 'Enter') {
-            value = currentValue;
+            dispatchValue();
         }
+    }
+
+    function dispatchValue() {
+        dispatch('valueEntered', {text: currentValue});
+        currentValue = '';
     }
 </script>
 
@@ -20,7 +35,7 @@
         <Icon class="material-icons">create</Icon>
         <Input bind:value={currentValue} on:keydown={handleKeyDown} placeholder="Wort" class="solo-input" />
     </Paper>
-    <Fab on:click={() => value = currentValue} disabled={value === ''} class="green-fab">
+    <Fab on:click={() => dispatchValue() } class={colorClass}>
         <Icon class="material-icons">check</Icon>
     </Fab>
 </div>
