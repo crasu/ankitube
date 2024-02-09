@@ -1,37 +1,69 @@
 <script lang="ts">
 	import WordHint from '$lib/WordHint.svelte';
-    import Input, { type ValueEntered } from '../lib/input.svelte';
-    import type { InputColors } from '../lib/input.svelte';
-    
-    let visible = true;
-    let wordlist = ["funktionieren", "Monitor", "Website", "Computer", "Tastatur"];
+	import WordInput, { type ValueEntered } from '../lib/WordInput.svelte';
+	import type { InputColors } from '../lib/WordInput.svelte';
+	import Youtubeplayer from '../lib/Youtubeplayer.svelte';
+	let player: any;
 
-    let color: InputColors = 'red';
-    let value = '';
+	let renderWordHint = true;
+    let displayVideo = false;
+	let wordlist = ['funktionieren', 'Monitor', 'Website', 'Computer', 'Tastatur'];
+    let videoOffset = 0;
+    const videoAdvance = 5;
 
-    function hideWordHint() {
+	let color: InputColors = 'red';
+
+	function hideWordHintAfterTimeout() {
+		setTimeout(() => {
+			renderWordHint = false;
+		}, 1000);
+	}
+
+    function hideVideoAfterTimeout() {
         setTimeout(() => {
-            visible = false;
-        }, 1000);
+            displayVideo = false;
+        }, videoAdvance * 1000 + 1000);   
     }
 
-    hideWordHint();
+    function play(videooffset: number) {
+        player.loadVideoById({
+            videoId: "dQw4w9WgXcQ", 
+            startSeconds: videooffset, 
+            endSeconds: videooffset + 5, 
+            allowSeekAhead: true }
+        );
+    }
 
-    function checkWord(event: ValueEntered) {
-        value = event.detail.text;
+	hideWordHintAfterTimeout();
+
+	function checkWord(event: ValueEntered) {
+		let value = event.detail.text;
+		renderWordHint = true;
         
-        visible = true;
+        let correct = wordlist.includes(value);
 
-        color = wordlist.includes(value) ? "green" : "red";
-        wordlist = wordlist.filter(val => val !== value); 
+        if (correct) {
+            color = 'green';
+            wordlist = wordlist.filter((val) => val !== value);
 
-        hideWordHint();
-    }
+            displayVideo = true;
+            play(videoOffset);
 
+            videoOffset += 5;
+
+            hideVideoAfterTimeout();
+        } else {
+            color = 'red';
+        }
+
+		hideWordHintAfterTimeout();
+	}
 </script>
 
 <h1>Welcome to SvelteKit</h1>
-<Input on:valueEntered={checkWord} color={color}/>
-<WordHint wordlist={wordlist} visible={visible}/>
+<WordInput on:valueEntered={checkWord} {color} />
+{#if renderWordHint}
+    <WordHint {wordlist} />
+{/if}
 
-<pre class="status">Value: {value}</pre>
+<Youtubeplayer bind:player display={displayVideo}/>
