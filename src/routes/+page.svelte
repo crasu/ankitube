@@ -3,72 +3,79 @@
 	import WordInput, { type ValueEntered } from '../lib/WordInput.svelte';
 	import type { InputColors } from '../lib/WordInput.svelte';
 	import Youtubeplayer from '../lib/Youtubeplayer.svelte';
-    import Header from '../lib/Header.svelte';
-    
+	import Header from '../lib/Header.svelte';
+
 	let player: any;
 
 	let renderWordHint = true;
-    let displayVideo = false;
+	let displayVideo = false;
 	let wordlist = ['funktionieren', 'Monitor', 'Website', 'Computer', 'Tastatur'];
-    let videoOffset = 0;
-    const videoAdvance = 5;
+	let videoOffset = 0;
+	const videoAdvance = 5;
 
 	let color: InputColors = 'red';
 
-    showWordHint();
+	showWordHint();
 
 	function showWordHint() {
-        renderWordHint = true;
+		renderWordHint = true;
 
-        setTimeout(() => {
+		setTimeout(() => {
 			renderWordHint = false;
 		}, 1000);
 	}
 
-    function showVideo() {
-        displayVideo = true;
+	function showVideo(stopTime = 0) {
+		displayVideo = true;
 
-        setTimeout(() => {
-            player.stopVideo();
-            displayVideo = false;
-        }, videoAdvance * 1000);   
-    }
+		if (stopTime !== 0) {
+			setTimeout(() => {
+				player.stopVideo();
+				displayVideo = false;
+			}, stopTime * 1000);
+		}
+	}
 
-    function play(videoOffset: number) {
-        player.loadVideoById({
-            videoId: "t7G3dyttT3Y", 
-            startSeconds: videoOffset, 
-            endSeconds: videoOffset + videoAdvance, 
-            allowSeekAhead: true }
-        );
-    }
+	function play(videoOffset: number, videoAdvance = 0) {
+		player.loadVideoById({
+			videoId: 't7G3dyttT3Y',
+			startSeconds: videoOffset,
+			...(videoAdvance !== 0 && { endSeconds: videoOffset + videoAdvance }),
+			allowSeekAhead: true
+		});
+	}
 
 	function checkWord(event: ValueEntered) {
 		let value = event.detail.text;
-        let correct = wordlist.includes(value);
+		let correct = wordlist.includes(value);
 
-        if (correct) {
-            color = 'green';
-            wordlist = wordlist.filter((val) => val !== value);
-
+		if (wordlist.length === 0 || wordlist.length === 1 && correct) {
+			wordlist = [];
             play(videoOffset);
-
-            videoOffset += videoAdvance;
-
             showVideo();
-        } else {
-            color = 'red';
-        }
+			return;
+		}
 
-		showWordHint();
+		if (correct) {
+			color = 'green';
+			wordlist = wordlist.filter((val) => val !== value);
+
+			play(videoOffset);
+
+			videoOffset += videoAdvance;
+
+			showVideo(videoAdvance);
+		} else {
+			color = 'red';
+			showWordHint();
+		}
 	}
 </script>
 
 <Header>Ankitube</Header>
 <WordInput on:valueEntered={checkWord} {color} />
 {#if renderWordHint}
-    <WordHint {wordlist} />
+	<WordHint {wordlist} />
 {/if}
 
-<Youtubeplayer bind:player display={displayVideo}/>
-  
+<Youtubeplayer bind:player display={displayVideo} />

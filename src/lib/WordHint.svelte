@@ -4,21 +4,19 @@
 	export let wordlist: string[] = [];
 </script>
 
-
-	<div>
-		<Paper class="word-list">
-			<Title>Wortliste</Title>
-			<Content>
-				<List>
-					{#each wordlist as word}
-						<Item><Text>{word}</Text></Item>
-						<Separator />
-					{/each}
-				</List>
-			</Content>
-		</Paper>
-	</div>
-
+<div>
+	<Paper class="word-list">
+		<Title>Wortliste</Title>
+		<Content>
+			<List>
+				{#each wordlist as word}
+					<Item><Text>{word}</Text></Item>
+					<Separator />
+				{/each}
+			</List>
+		</Content>
+	</Paper>
+</div>
 
 <style>
 	* :global(.word-list) {

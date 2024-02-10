@@ -1,38 +1,38 @@
 <script>
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-    export let player;
-    export let initialVideoId = '';
+	export let player;
+	export let initialVideoId = '';
 	export let display = true;
 
-    const ytPlayerId = 'youtube-player';
+	const ytPlayerId = 'youtube-player';
 
-    onMount(() => {
-        function load() {
+	onMount(() => {
+		function load() {
 			// @ts-ignore
-            player = new YT.Player(ytPlayerId, {
-                height: '100%',
-                width: '100%',
-                videoId: initialVideoId,
-                playerVars: { autoplay: 1 }
-            });
-        }
+			player = new YT.Player(ytPlayerId, {
+				height: '100%',
+				width: '100%',
+				videoId: initialVideoId,
+				playerVars: { autoplay: 1 }
+			});
+		}
 
 		// @ts-ignore
-        if (window.YT?.loaded == 1) {
-            load();
-        } else {
+		if (window.YT?.loaded == 1) {
+			load();
+		} else {
 			// @ts-ignore
-            window.onYouTubeIframeAPIReady = load;
-        }
-    });
+			window.onYouTubeIframeAPIReady = load;
+		}
+	});
 </script>
 
 <svelte:head>
-    <script src="https://www.youtube.com/iframe_api"></script>
+	<script src="https://www.youtube.com/iframe_api"></script>
 </svelte:head>
 
-<div class="youtubeplayer { display ? '': 'hidden' }">
+<div class="youtubeplayer {display ? '' : 'hidden'}">
 	<div id={ytPlayerId} />
 </div>
 
