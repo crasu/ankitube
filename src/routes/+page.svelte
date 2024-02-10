@@ -3,67 +3,72 @@
 	import WordInput, { type ValueEntered } from '../lib/WordInput.svelte';
 	import type { InputColors } from '../lib/WordInput.svelte';
 	import Youtubeplayer from '../lib/Youtubeplayer.svelte';
+    import Header from '../lib/Header.svelte';
+    
 	let player: any;
 
 	let renderWordHint = true;
     let displayVideo = false;
 	let wordlist = ['funktionieren', 'Monitor', 'Website', 'Computer', 'Tastatur'];
     let videoOffset = 0;
-    const videoAdvance = 30;
+    const videoAdvance = 5;
 
 	let color: InputColors = 'red';
 
-	function hideWordHintAfterTimeout() {
-		setTimeout(() => {
+    showWordHint();
+
+	function showWordHint() {
+        renderWordHint = true;
+
+        setTimeout(() => {
 			renderWordHint = false;
 		}, 1000);
 	}
 
-    function hideVideoAfterTimeout() {
+    function showVideo() {
+        displayVideo = true;
+
         setTimeout(() => {
+            player.stopVideo();
             displayVideo = false;
-        }, videoAdvance * 1000 + 1000);   
+        }, videoAdvance * 1000);   
     }
 
-    function play(videooffset: number) {
+    function play(videoOffset: number) {
         player.loadVideoById({
-            videoId: "dQw4w9WgXcQ", 
-            startSeconds: videooffset, 
-            endSeconds: videooffset + 5, 
+            videoId: "t7G3dyttT3Y", 
+            startSeconds: videoOffset, 
+            endSeconds: videoOffset + videoAdvance, 
             allowSeekAhead: true }
         );
     }
 
-	hideWordHintAfterTimeout();
-
 	function checkWord(event: ValueEntered) {
 		let value = event.detail.text;
-		renderWordHint = true;
-        
         let correct = wordlist.includes(value);
 
         if (correct) {
             color = 'green';
             wordlist = wordlist.filter((val) => val !== value);
 
-            displayVideo = true;
             play(videoOffset);
 
-            videoOffset += 5;
+            videoOffset += videoAdvance;
 
-            hideVideoAfterTimeout();
+            showVideo();
         } else {
             color = 'red';
         }
 
-		hideWordHintAfterTimeout();
+		showWordHint();
 	}
 </script>
 
-<h1>Welcome to SvelteKit</h1>
+<Header>Ankitube</Header>
 <WordInput on:valueEntered={checkWord} {color} />
 {#if renderWordHint}
     <WordHint {wordlist} />
 {/if}
 
 <Youtubeplayer bind:player display={displayVideo}/>
+  

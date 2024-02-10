@@ -19,7 +19,7 @@
         }
 
 		// @ts-ignore
-        if (window?.YT?.loaded == 1) {
+        if (window.YT?.loaded == 1) {
             load();
         } else {
 			// @ts-ignore
@@ -38,7 +38,8 @@
 
 <style>
 	.youtubeplayer {
-		max-width: 300px;
+		width: 300px;
+		height: 400px;
 		margin: auto;
 		margin-top: 25px;
 		width: 50%;

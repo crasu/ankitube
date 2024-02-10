@@ -35,7 +35,7 @@
 		<Input
 			bind:value={currentValue}
 			on:keydown={handleKeyDown}
-			placeholder="Wort"
+			placeholder="Lernwort eingeben..."
 			class="solo-input"
 		/>
 	</Paper>
