@@ -9,7 +9,7 @@
     let displayVideo = false;
 	let wordlist = ['funktionieren', 'Monitor', 'Website', 'Computer', 'Tastatur'];
     let videoOffset = 0;
-    const videoAdvance = 5;
+    const videoAdvance = 30;
 
 	let color: InputColors = 'red';
 

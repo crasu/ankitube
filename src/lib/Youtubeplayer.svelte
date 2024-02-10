@@ -19,7 +19,7 @@
         }
 
 		// @ts-ignore
-        if (window.YT) {
+        if (window?.YT?.loaded == 1) {
             load();
         } else {
 			// @ts-ignore
