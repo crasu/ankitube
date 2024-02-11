@@ -3,7 +3,7 @@
 	import Textfield from '@smui/textfield';
 	import HelperText from '@smui/textfield/helper-text';
 	import { onMount } from 'svelte';
-	import { loadWordlist, loadVideoLink } from '$lib/localStorage.ts';
+	import { loadWordlist, loadVideoLink } from '$lib/localStorage';
 
 	let videoLink = '';
 	let wordlist = '';
@@ -13,15 +13,15 @@
 		videoLink = loadVideoLink();
 	});
 
-	function updateWordlist(event: CustomEvent<string>) {
-		let wlstring = event.target.value;
-		let wl = wlstring.split('\n').filter((word) => word.trim() !== '');
+	function updateWordlist(event: CustomEvent) {
+		let wlstring = (event.target as HTMLInputElement).value;
+		let wl = wlstring.split('\n').filter((word: string) => word.trim() !== '');
 
 		localStorage.setItem('wordlist', JSON.stringify(wl));
 	}
 
-	function updateYoutubeLink(event: CustomEvent<string>) {
-		videoLink = event.target.value;
+	function updateYoutubeLink(event: CustomEvent) {
+		videoLink = (event.target as HTMLInputElement).value;
 
 		localStorage.setItem('videoLink', videoLink);
 	}

@@ -4,7 +4,7 @@
 	import type { InputColors } from './WordInput.svelte';
 	import Youtubeplayer from './Youtubeplayer.svelte';
 	import Header from '$lib/Header.svelte';
-	import { loadWordlist, loadVideoId } from '$lib/localStorage.ts';
+	import { loadWordlist, loadVideoId } from '$lib/localStorage';
 	import { onMount } from 'svelte';
 
 	let youtubeId = '';
@@ -13,7 +13,7 @@
 
 	let renderWordHint = true;
 	let displayVideo = false;
-	let wordlist = [];
+	let wordlist: string[] = [];
 	let videoOffset = 0;
 	const videoAdvance = 5;
 
