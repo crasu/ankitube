@@ -1,26 +1,52 @@
-<script>
-    import Header from '$lib/Header.svelte';
-    import Textfield from '@smui/textfield';
-    import HelperText from '@smui/textfield/helper-text';
-    let wordlist = 'Monitor\nComputer';
-    let videoLink = 'https://www.youtube.com/watch?v=G__fWfF4wYM';
+<script lang="ts">
+	import Header from '$lib/Header.svelte';
+	import Textfield from '@smui/textfield';
+	import HelperText from '@smui/textfield/helper-text';
+	import { onMount } from 'svelte';
+	import { loadWordlist, loadVideoLink } from '$lib/localStorage.ts';
+
+	let videoLink = '';
+	let wordlist = '';
+
+	onMount(() => {
+		wordlist = loadWordlist().join('\n');
+		videoLink = loadVideoLink();
+	});
+
+	function updateWordlist(event: CustomEvent<string>) {
+		let wlstring = event.target.value;
+		let wl = wlstring.split('\n').filter((word) => word.trim() !== '');
+
+		localStorage.setItem('wordlist', JSON.stringify(wl));
+	}
+
+	function updateYoutubeLink(event: CustomEvent<string>) {
+		videoLink = event.target.value;
+
+		localStorage.setItem('videoLink', videoLink);
+	}
 </script>
 
 <Header>Ankitube</Header>
 
 <div class="margins">
-    <Textfield
-      style="width: 100%; height: 10em"
-      helperLine$style="width: 100%; margin-bottom: 1em;"
-      textarea
-      bind:value={wordlist}
-      label="Wortliste"
-    >
-      <HelperText slot="helper">Zu lernende Wörter</HelperText>
-    </Textfield>
-    <Textfield variant="outlined" style="width: 100%;" bind:value={videoLink} label="Video Link">
-        <HelperText slot="helper">Link zum Video</HelperText>
-    </Textfield>
+	<Textfield
+		style="width: 100%; height: 10em"
+		helperLine$style="width: 100%; margin-bottom: 1em;"
+		textarea
+		value={wordlist}
+		on:input={updateWordlist}
+		label="Wortliste"
+	>
+		<HelperText slot="helper">Zu lernende Wörter</HelperText>
+	</Textfield>
+	<Textfield
+		variant="outlined"
+		style="width: 100%;"
+		value={videoLink}
+		on:input={updateYoutubeLink}
+		label="Video Link"
+	>
+		<HelperText slot="helper">Link zum Video</HelperText>
+	</Textfield>
 </div>
-
-  

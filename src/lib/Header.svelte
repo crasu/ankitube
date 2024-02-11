@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button, { Label } from '@smui/button';
-	import { base  } from '$app/paths';
+	import { base } from '$app/paths';
 </script>
 
 <div class="align">
@@ -13,7 +13,7 @@
 <style>
 	a {
 		color: inherit;
-    	text-decoration: none;
+		text-decoration: none;
 	}
 	.header {
 		size: 1.5rem;
@@ -24,7 +24,7 @@
 	}
 	.align {
 		display: flex;
-    	justify-content: space-between;
-    	align-items: center;
+		justify-content: space-between;
+		align-items: center;
 	}
 </style>

@@ -1,19 +1,28 @@
 <script lang="ts">
-	import WordHint from '$lib/WordHint.svelte';
-	import WordInput, { type ValueEntered } from '$lib/WordInput.svelte';
-	import type { InputColors } from '$lib/WordInput.svelte';
-	import Youtubeplayer from '$lib/Youtubeplayer.svelte';
+	import WordHint from './WordHint.svelte';
+	import WordInput, { type ValueEntered } from './WordInput.svelte';
+	import type { InputColors } from './WordInput.svelte';
+	import Youtubeplayer from './Youtubeplayer.svelte';
 	import Header from '$lib/Header.svelte';
+	import { loadWordlist, loadVideoId } from '$lib/localStorage.ts';
+	import { onMount } from 'svelte';
+
+	let youtubeId = '';
 
 	let player: any;
 
 	let renderWordHint = true;
 	let displayVideo = false;
-	let wordlist = ['funktionieren', 'Monitor', 'Website', 'Computer', 'Tastatur'];
+	let wordlist = [];
 	let videoOffset = 0;
 	const videoAdvance = 5;
 
 	let color: InputColors = 'red';
+
+	onMount(() => {
+		wordlist = loadWordlist();
+		youtubeId = loadVideoId();
+	});
 
 	showWordHint();
 
@@ -38,7 +47,7 @@
 
 	function play(videoOffset: number, videoAdvance = 0) {
 		player.loadVideoById({
-			videoId: 't7G3dyttT3Y',
+			videoId: youtubeId,
 			startSeconds: videoOffset,
 			...(videoAdvance !== 0 && { endSeconds: videoOffset + videoAdvance }),
 			allowSeekAhead: true
@@ -49,10 +58,10 @@
 		let value = event.detail.text;
 		let correct = wordlist.includes(value);
 
-		if (wordlist.length === 0 || wordlist.length === 1 && correct) {
+		if (wordlist.length === 0 || (wordlist.length === 1 && correct)) {
 			wordlist = [];
-            play(videoOffset);
-            showVideo();
+			play(videoOffset);
+			showVideo();
 			return;
 		}
 
