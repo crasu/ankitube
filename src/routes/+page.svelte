@@ -1,9 +1,9 @@
 <script lang="ts">
 	import WordHint from '$lib/WordHint.svelte';
-	import WordInput, { type ValueEntered } from '../lib/WordInput.svelte';
-	import type { InputColors } from '../lib/WordInput.svelte';
-	import Youtubeplayer from '../lib/Youtubeplayer.svelte';
-	import Header from '../lib/Header.svelte';
+	import WordInput, { type ValueEntered } from '$lib/WordInput.svelte';
+	import type { InputColors } from '$lib/WordInput.svelte';
+	import Youtubeplayer from '$lib/Youtubeplayer.svelte';
+	import Header from '$lib/Header.svelte';
 
 	let player: any;
 
