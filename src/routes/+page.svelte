@@ -9,7 +9,7 @@
 
 	let youtubeId = '';
 
-	let player: any;
+	let player: any; // eslint-disable-line
 
 	let renderWordHint = true;
 	let displayVideo = false;

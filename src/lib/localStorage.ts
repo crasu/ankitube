@@ -1,10 +1,10 @@
 export function loadWordlist(): string[] {
-	let wstr = localStorage.getItem('wordlist');
+	const wstr = localStorage.getItem('wordlist');
 	return wstr ? JSON.parse(wstr) : ['Computer'];
 }
 
 export function loadVideoLink(): string {
-	let vl = localStorage.getItem('videoLink');
+	const vl = localStorage.getItem('videoLink');
 	return vl ? vl : 'https://www.youtube.com/watch?v=G__fWfF4wYM';
 }
 
